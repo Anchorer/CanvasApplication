@@ -1,4 +1,4 @@
-package org.anchorer.l;
+package org.anchorer.l.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import org.anchorer.l.view.CanvasView;
+import org.anchorer.l.R;
 
 public class MainActivity extends AppCompatActivity {
 
