@@ -1,13 +1,10 @@
 package org.anchorer.l.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 
 import org.anchorer.l.R;
 import org.anchorer.l.view.CanvasView;
@@ -15,8 +12,7 @@ import org.anchorer.l.view.CanvasView;
 public class MainActivity extends AppCompatActivity {
 
     private CanvasView mCanvasView;
-    private EditText mXView, mYView;
-    private Button mDrawBtn;
+//    private EditText mXView, mYView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +22,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mCanvasView = (CanvasView) findViewById(R.id.main_canvas);
-        mXView = (EditText) findViewById(R.id.main_x);
-        mYView = (EditText) findViewById(R.id.main_y);
-        mDrawBtn = (Button) findViewById(R.id.main_draw);
+//        mXView = (EditText) findViewById(R.id.main_x);
+//        mYView = (EditText) findViewById(R.id.main_y);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> mCanvasView.clearCanvas());
-
-        mDrawBtn.setOnClickListener(v -> {
-            int x = Integer.parseInt(mXView.getText().toString());
-            int y = Integer.parseInt(mYView.getText().toString());
-            mCanvasView.drawToPoint(x, y);
-        });
+        findViewById(R.id.fab_revert).setOnClickListener(v -> mCanvasView.revert());
+        findViewById(R.id.fab_clear).setOnClickListener(v -> mCanvasView.clearCanvas());
+//        findViewById(R.id.main_draw).setOnClickListener(v -> {
+//            int x = Integer.parseInt(mXView.getText().toString());
+//            int y = Integer.parseInt(mYView.getText().toString());
+//            mCanvasView.drawToPoint(x, y);
+//        });
     }
 
     @Override

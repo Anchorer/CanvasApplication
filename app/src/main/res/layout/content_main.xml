@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main"
     tools:context=".activity.MainActivity">
-    <RelativeLayout
+<!--    <RelativeLayout
         android:id="@+id/main_ope_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -31,10 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="Draw!"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
     <org.anchorer.l.view.CanvasView
         android:id="@+id/main_canvas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/main_ope_layout"/>
+        android:layout_height="match_parent"/>
 </RelativeLayout>
