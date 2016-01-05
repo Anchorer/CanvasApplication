@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.anchorer.l.consts.Const;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -25,8 +27,6 @@ public class CanvasView extends View {
 
     private Path mPath;
     private Paint mPaint;
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
     private float mX, mY;
     private static final float TOLERANCE = 5;
 
@@ -45,38 +45,19 @@ public class CanvasView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
+
+        setDrawingCacheBackgroundColor(c.getResources().getColor(android.R.color.white));
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.d(TAG, "CanvasView onSizeChanged: " + w + ", " + h);
         super.onSizeChanged(w, h, oldw, oldh);
-        initBitmapAndCanvas(w, h);
-    }
-
-    /**
-     * 初始化Bitmap和Canvas
-     * @param width
-     * @param height
-     */
-    private void initBitmapAndCanvas(int width, int height) {
-        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        int[] allPixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-        mBitmap.getPixels(allPixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-        for (int i = 0; i < allPixels.length; i++) {
-            allPixels[i] = Color.WHITE;
-        }
-        mBitmap.setPixels(allPixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-
-        mCanvas = new Canvas(mBitmap);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // draw the mPath with the mPaint on the canvas when onDraw
         canvas.drawPath(mPath, mPaint);
-//        mCanvas.drawPath(mPath, mPaint);
         saveBitmapToFile();
     }
 
@@ -87,12 +68,16 @@ public class CanvasView extends View {
         if (mNeedSaveFile) {
             mNeedSaveFile = false;
             try {
-                String path = Environment.getExternalStorageDirectory() + "/test/" + System.currentTimeMillis() + ".jpg";
+                setDrawingCacheEnabled(true);
+                buildDrawingCache(true);
+                Bitmap bitmap = getDrawingCache(true);
+                String path = Environment.getExternalStorageDirectory() + Const.PATH_BITMAP + System.currentTimeMillis() + ".jpg";
                 File newFile = new File(path);
                 if (!newFile.exists()) {
                     newFile.createNewFile();
                 }
-                mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(newFile));
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(newFile));
+                setDrawingCacheEnabled(false);
             } catch (Exception e) {
                 Log.e(TAG, "Exception", e);
             }

@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.anchorer.l.view.CanvasView;
 import org.anchorer.l.R;
+import org.anchorer.l.view.CanvasView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,20 +31,12 @@ public class MainActivity extends AppCompatActivity {
         mDrawBtn = (Button) findViewById(R.id.main_draw);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCanvasView.clearCanvas();
-            }
-        });
+        fab.setOnClickListener(view -> mCanvasView.clearCanvas());
 
-        mDrawBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int x = Integer.parseInt(mXView.getText().toString());
-                int y = Integer.parseInt(mYView.getText().toString());
-                mCanvasView.drawToPoint(x, y);
-            }
+        mDrawBtn.setOnClickListener(v -> {
+            int x = Integer.parseInt(mXView.getText().toString());
+            int y = Integer.parseInt(mYView.getText().toString());
+            mCanvasView.drawToPoint(x, y);
         });
     }
 
