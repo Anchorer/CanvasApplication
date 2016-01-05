@@ -30,6 +30,8 @@ public class CanvasView extends View {
     private float mX, mY;
     private static final float TOLERANCE = 5;
 
+    private boolean mNeedSaveFile;
+
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
 
@@ -39,7 +41,7 @@ public class CanvasView extends View {
         // and we set a new Paint with the desired attributes
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
@@ -69,22 +71,31 @@ public class CanvasView extends View {
         mCanvas = new Canvas(mBitmap);
     }
 
-    // override onDraw
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // draw the mPath with the mPaint on the canvas when onDraw
-        mCanvas.drawPath(mPath, mPaint);
+        canvas.drawPath(mPath, mPaint);
+//        mCanvas.drawPath(mPath, mPaint);
+        saveBitmapToFile();
+    }
 
-        try {
-            String path = Environment.getExternalStorageDirectory() + "/test/" + System.currentTimeMillis() + ".jpg";
-            File newFile = new File(path);
-            if (!newFile.exists()) {
-                newFile.createNewFile();
+    /**
+     * Save Bitmap To SDCard
+     */
+    private void saveBitmapToFile() {
+        if (mNeedSaveFile) {
+            mNeedSaveFile = false;
+            try {
+                String path = Environment.getExternalStorageDirectory() + "/test/" + System.currentTimeMillis() + ".jpg";
+                File newFile = new File(path);
+                if (!newFile.exists()) {
+                    newFile.createNewFile();
+                }
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(newFile));
+            } catch (Exception e) {
+                Log.e(TAG, "Exception", e);
             }
-            mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(newFile));
-        } catch (Exception e) {
-            Log.e(TAG, "Exception", e);
         }
     }
 
@@ -132,6 +143,7 @@ public class CanvasView extends View {
     // when ACTION_UP stop touch
     private void upTouch() {
         mPath.lineTo(mX, mY);
+        mNeedSaveFile = true;
     }
 
     /**
